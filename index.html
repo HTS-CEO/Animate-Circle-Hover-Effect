@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Hover Effect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            text-decoration: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .hover-circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(0, 0, 0, 0.1) 0%, 
+                rgba(0, 0, 0, 0.05) 50%, 
+                rgba(0, 0, 0, 0) 70%);
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            transition: 
+                transform 0.35s cubic-bezier(0.2, 0.8, 0.4, 1.2), 
+                opacity 0.2s ease;
+        }
+
+        .nav-item:hover .hover-circle {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            transition: 
+                transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.5), 
+                opacity 0.1s ease;
+        }
+
+        .nav-item.hover-out .hover-circle {
+            transform: translate(-50%, -50%) scale(0);
+            transition: 
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-item" id="projectBtn">
+            Start a Project
+            <span class="hover-circle"></span>
+        </a>
+        <a href="#" class="nav-item" id="menuBtn">
+            Menu
+            <span class="hover-circle"></span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                const circle = item.querySelector('.hover-circle');
+                
+                item.addEventListener('mousemove', function(e) {
+                    const rect = item.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    circle.style.left = `${x}px`;
+                    circle.style.top = `${y}px`;
+                });
+                
+                item.addEventListener('mouseenter', function() {
+                    item.classList.remove('hover-out');
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    item.classList.add('hover-out');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
